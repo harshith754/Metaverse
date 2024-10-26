@@ -29,8 +29,12 @@ io.on("connection", (socket) => {
 
   io.emit("updatePlayers", players); //emit to all players
 
-  socket.on("message", (msg) => {
-    logs.push(msg);
+  socket.on("updatePlayers", (position) => {
+    // Update the player's position
+    players[socket.id] = position;
+
+    // Emit updated player positions to all clients
+    io.emit("updatePlayers", players);
   });
 
   // Handle disconnection
