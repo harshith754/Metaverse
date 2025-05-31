@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 export const ChatInterface = ({
   name,
@@ -8,6 +8,23 @@ export const ChatInterface = ({
   setInputValue,
   handleSendMessage,
 }) => {
+  const inputRef = useRef(null);
+
+  const handleFocus = () => {
+    const phaserGame =
+      window.Phaser && window.Phaser.GAMES && window.Phaser.GAMES[0];
+    if (phaserGame && phaserGame.input && phaserGame.input.keyboard) {
+      phaserGame.input.keyboard.enabled = false;
+    }
+  };
+  const handleBlur = () => {
+    const phaserGame =
+      window.Phaser && window.Phaser.GAMES && window.Phaser.GAMES[0];
+    if (phaserGame && phaserGame.input && phaserGame.input.keyboard) {
+      phaserGame.input.keyboard.enabled = true;
+    }
+  };
+
   return (
     <div className=" bg-white rounded-lg shadow-lg flex flex-col">
       <div className="w-72 h-[500px] bg-white rounded-lg shadow-lg flex flex-col">
@@ -55,6 +72,14 @@ export const ChatInterface = ({
               name="message"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              ref={inputRef}
+              onKeyDown={(e) => {
+                if (e.code === "Space" || e.key === " ") {
+                  e.stopPropagation();
+                }
+              }}
               placeholder={
                 activeChat ? "Type a message..." : "Select a player first"
               }

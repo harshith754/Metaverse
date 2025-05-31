@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Phaser from "phaser";
 import { Player } from "../components/PlayerClass";
 import {
-  Boundary,
   createCollisionMap,
   collisionsMap,
 } from "../components/CollisionSystems.js";
@@ -18,7 +17,7 @@ class GameScene extends Phaser.Scene {
   constructor(socket, playerName, setNearbyPlayers) {
     super({ key: "GameScene" });
     this.players = new Map();
-    this.playerTexts = new Map(); // Store name text objects
+    this.playerTexts = new Map();
     this.currentPlayer = null;
     this.currentPlayerText = null;
     this.socket = socket;
@@ -146,11 +145,10 @@ class GameScene extends Phaser.Scene {
   checkNearbyPlayers() {
     this.nearbyPlayers.clear();
 
-    const playersArray = Array.from(this.players.entries());
     for (const [id, player] of this.players.entries()) {
       if (player === this.currentPlayer) continue;
 
-      const overlapThreshold = 120; // pixels
+      const overlapThreshold = 120;
 
       const distance = Phaser.Math.Distance.Between(
         this.currentPlayer.x,
@@ -188,8 +186,7 @@ export const Home = () => {
   const gameRef = useRef(null);
   const navigate = useNavigate();
 
-  // Use default (same-origin) socket connection for production
-  const { socket, emitEvent, onEvent } = useSocket();
+  const { socket, onEvent } = useSocket();
   const [messages, setMessages] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
   const [onlinePlayers, setOnlinePlayers] = useState([]);
@@ -203,8 +200,10 @@ export const Home = () => {
     } else {
       navigate("/login");
     }
-    if (!socket) return;
+  }, [navigate]);
 
+  useEffect(() => {
+    if (!socket || !name) return;
     const config = {
       type: Phaser.AUTO,
       parent: "phaser-container",
@@ -225,23 +224,25 @@ export const Home = () => {
         height: GAME_CONFIG.DIMENSIONS.HEIGHT,
       },
     };
-
     gameRef.current = new Phaser.Game(config);
+    return () => {
+      gameRef.current?.destroy(true);
+    };
+  }, [socket, name, setNearbyPlayers]);
 
-    onEvent("updatePlayers", (players) => {
+  useEffect(() => {
+    if (!socket) return;
+    const offUpdatePlayers = onEvent("updatePlayers", (players) => {
       const filteredPlayers = filterCurrentPlayer(players, socket.id);
-
       gameRef.current?.scene
         .getScene("GameScene")
         ?.updatePlayers(filteredPlayers);
-
       const onlinePlayersList = Object.entries(filteredPlayers).map(
         ([id, { name }]) => ({ id, name })
       );
       setOnlinePlayers(onlinePlayersList);
     });
-
-    onEvent("chatMessage", (data) => {
+    const offChatMessage = onEvent("chatMessage", (data) => {
       setMessages((prev) => [
         ...prev,
         {
@@ -256,11 +257,11 @@ export const Home = () => {
         toast(`Message recieved from ${data.from}`, { duration: 2000 });
       }
     });
-
     return () => {
-      gameRef.current?.destroy(true);
+      if (offUpdatePlayers) offUpdatePlayers();
+      if (offChatMessage) offChatMessage();
     };
-  }, [socket, onEvent, navigate, name]);
+  }, [socket, onEvent, activeChat]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
