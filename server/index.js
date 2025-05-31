@@ -69,8 +69,18 @@ io.on("connection", (socket) => {
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from the React app
+const path = require("path");
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+// API routes
 app.get("/api/message", (req, res) => {
   res.json({ message: "Hello from the server!" });
+});
+
+// All other GET requests not handled before will return the React app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
 app.get("/", (req, res) => {
