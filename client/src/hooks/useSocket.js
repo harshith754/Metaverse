@@ -6,7 +6,6 @@ function useSocket(serverUrl) {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    // Use same-origin in production for single deployment
     const url = serverUrl || window.location.origin;
     const socketInstance = io(url);
     setSocket(socketInstance);

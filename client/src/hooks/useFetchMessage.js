@@ -1,4 +1,3 @@
-// src/hooks/useFetchMessage.js
 import { useState, useEffect } from "react";
 
 function useFetchMessage() {
@@ -11,7 +10,6 @@ function useFetchMessage() {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  // Return both the message and the setMessage function
   return [message, setMessage];
 }
 
