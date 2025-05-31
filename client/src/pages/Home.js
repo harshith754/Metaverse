@@ -102,7 +102,7 @@ class GameScene extends Phaser.Scene {
   setupControls() {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.input.keyboard.on(
-      "keydown-D",
+      "keydown-Z",
       this.toggleBoundaryVisibility.bind(this)
     );
   }
