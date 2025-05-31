@@ -193,7 +193,7 @@ export const Home = () => {
   const [nearbyPlayers, setNearbyPlayers] = useState([]);
 
   useEffect(() => {
-    const storedCredentials = localStorage.getItem("userCredentials");
+    const storedCredentials = sessionStorage.getItem("userCredentials");
     if (storedCredentials) {
       const { name } = JSON.parse(storedCredentials);
       setName(name);

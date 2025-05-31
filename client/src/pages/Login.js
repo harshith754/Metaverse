@@ -15,8 +15,7 @@ export const Login = () => {
       return;
     }
 
-    // Store user credentials in localStorage for persistence
-    localStorage.setItem(
+    sessionStorage.setItem(
       "userCredentials",
       JSON.stringify({
         name: trimmedName,
@@ -24,7 +23,6 @@ export const Login = () => {
       })
     );
 
-    // Show success toast and navigate
     toast.success(`Welcome, ${trimmedName}!`);
     navigate("/", {
       state: {
@@ -63,7 +61,7 @@ export const Login = () => {
             type="submit"
             className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            Join Game
+            Enter the Metaverse!
           </button>
         </form>
       </div>
