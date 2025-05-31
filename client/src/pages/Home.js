@@ -188,7 +188,8 @@ export const Home = () => {
   const gameRef = useRef(null);
   const navigate = useNavigate();
 
-  const { socket, emitEvent, onEvent } = useSocket("http://localhost:5000");
+  // Use default (same-origin) socket connection for production
+  const { socket, emitEvent, onEvent } = useSocket();
   const [messages, setMessages] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
   const [onlinePlayers, setOnlinePlayers] = useState([]);
