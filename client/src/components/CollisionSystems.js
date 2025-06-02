@@ -23,7 +23,7 @@ export const createCollisionMap = (scene, collisionsMap) => {
   collisionsMap.forEach((row, i) => {
     row.forEach((symbol, j) => {
       // Assuming 1 represents a collision tile
-      if (symbol != 0) {
+      if (symbol !== 0) {
         const boundary = new Boundary(
           scene,
           j * 36 + 18, // x position (centered)
