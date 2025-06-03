@@ -6,7 +6,7 @@ export const Login = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
 
     const trimmedName = name.trim();
@@ -32,38 +32,58 @@ export const Login = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-neutral-200 p-4">
-      <h1 className="text-2xl font-bold text-neutral-800 mb-6 text-center">
-        Metaverse Project
-      </h1>
-      <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-xl ">
-        <form onSubmit={handleSubmit} className="space-y-4 m-5">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Enter your name to join
-            </label>
+    <div
+      className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-100 to-purple-200"
+      style={{
+        backgroundImage: "url('/img/about.webp')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="bg-white rounded-xl shadow-lg flex flex-col md:flex-row overflow-hidden max-w-3xl w-full">
+        {/* Info Section */}
+        <div className="md:w-1/2 p-8 pt-20 flex flex-col justify-center bg-gradient-to-br from-purple-500 to-blue-400 text-white max-h-[32rem] overflow-auto">
+          <h1 className="text-2xl font-bold mb-4 mt-15">
+            Welcome to the Metaverse Project
+          </h1>
+          <p className="mb-2 text-lg">
+            Step into a multiplayer virtual world! Move around, chat with nearby
+            players, and experience a new kind of online interaction.
+            <br />
+            <span className="font-semibold">Features:</span>
+            <ul className="list-disc ml-6 mt-2">
+              <li>Real-time multiplayer map</li>
+              <li>Proximity-based chat</li>
+              <li>Customizable avatars (coming soon!)</li>
+            </ul>
+          </p>
+          <img
+            src="/img/gallery-5.webp"
+            alt="Virtual World"
+            className="rounded-lg shadow-lg mt-4 max-h-48 object-cover"
+          />
+        </div>
+        {/* Login Form */}
+        <div className="md:w-1/2 p-8 flex flex-col justify-center">
+          <form onSubmit={handleLogin} className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Login</h2>
             <input
-              id="name"
               type="text"
+              placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Your name"
-              minLength={2}
-              maxLength={15}
+              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             />
-          </div>
-          <button
-            type="submit"
-            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Enter the Metaverse!
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+            >
+              Enter the Metaverse!
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
