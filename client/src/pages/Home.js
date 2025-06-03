@@ -8,10 +8,7 @@ import {
 import useSocket from "../hooks/useSocket";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { OnlinePlayers } from "../components/OnlinePlayers";
-import { ChatInterface } from "../components/ChatInterface";
 import { GAME_CONFIG } from "../components/gameConfig";
-import { NearbyPlayersDisplay } from "../components/NearbyPlayers";
 
 class GameScene extends Phaser.Scene {
   constructor(socket, playerName, setNearbyPlayers) {

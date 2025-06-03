@@ -6,7 +6,7 @@ export const Login = () => {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [activePlayerCount] = useState(Math.floor(Math.random() * 5000) + 8000); // Simulated count
+  // const [activePlayerCount] = useState(Math.floor(Math.random() * 5000) + 8000); // Simulated count
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -15,6 +15,8 @@ export const Login = () => {
       toast.error("Name must be between 2 and 15 characters");
       return;
     }
+
+    setIsLoading(true);
 
     sessionStorage.setItem(
       "userCredentials",
@@ -30,6 +32,7 @@ export const Login = () => {
         name: trimmedName,
       },
     });
+    setIsLoading(false);
   };
 
   // Floating particles animation
