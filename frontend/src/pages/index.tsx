@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
+import { useUserSession } from "@/hooks/use-user-session";
+import { useSocketEvents } from "@/hooks/use-socket-events";
+import { usePlayerUpdates } from "@/hooks/use-player-updates";
+import { useChatState } from "@/hooks/use-chat-state";
 
 import { useSocket } from "@/providers/socket-provider";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Game } from "@/features/world/components/game";
 import { PlayerLists } from "@/features/player/components/player-lists";
 import { ChatInterface } from "@/features/chat/components/chat-interface";
-import type { Message } from "@/features/chat/types";
 import type { PlayerInfo } from "@/features/player/types";
 import { Header } from "@/components/layout/header";
 
@@ -20,77 +23,22 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  // --- State Management ---
-  const [inputValue, setInputValue] = useState<string>("");
   const [name, setName] = useState<string>("");
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [activeChat, setActiveChat] = useState<string | null>(null);
+
   const [onlinePlayers, setOnlinePlayers] = useState<PlayerInfo[]>([]);
   const [nearbyPlayers, setNearbyPlayers] = useState<NearbyPlayer[]>([]);
 
-  const router = useRouter();
   const { socket } = useSocket();
 
-  const handleUpdatePlayers = (players: Record<string, { x: number; y: number; name: string }>) => {
-    const playersList = Object.entries(players).map(([id, { name }]) => ({ id, name }));
-    setOnlinePlayers(playersList);
-  };
+  const { inputValue, setInputValue, messages, setMessages, activeChat, setActiveChat, handleSendMessage } =
+    useChatState({ name, socket });
 
-  // --- Effects ---
-  useEffect(() => {
-    const storedCredentials = sessionStorage.getItem("userCredentials");
-    if (storedCredentials) {
-      const { name } = JSON.parse(storedCredentials);
-      setName(name);
-    } else {
-      router.navigate({ to: "/login" });
-    }
-  }, [router]);
+  const { handleUpdatePlayers } = usePlayerUpdates({ setOnlinePlayers });
 
-  useEffect(() => {
-    if (!socket) return;
+  useUserSession({ setName });
 
-    const handleChatMessage = (data: { from: string; to: string; message: string }) => {
-      const newMessage: Message = {
-        id: Date.now(),
-        from: data.from,
-        to: data.to,
-        message: data.message,
-        timestamp: new Date().toLocaleTimeString(),
-      };
-      setMessages((prev) => [...prev, newMessage]);
-    };
+  useSocketEvents({ socket, setMessages, onUpdatePlayers: handleUpdatePlayers });
 
-    socket.on("updatePlayers", handleUpdatePlayers);
-    socket.on("chatMessage", handleChatMessage);
-
-    return () => {
-      socket.off("updatePlayers", handleUpdatePlayers);
-      socket.off("chatMessage", handleChatMessage);
-    };
-  }, [socket, handleUpdatePlayers]);
-
-  // --- Handlers ---
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (inputValue.trim() && activeChat) {
-      const newMessage: Message = {
-        id: Date.now(),
-        from: name,
-        to: activeChat,
-        message: inputValue,
-        timestamp: new Date().toLocaleTimeString(),
-      };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-
-      // TODO: Re-implement socket emit
-      // socket?.emit('chatMessage', { ... });
-
-      setInputValue(""); // Clear the input field;
-    }
-  };
-
-  // --- Render ---
   return (
     <div>
       <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden">
