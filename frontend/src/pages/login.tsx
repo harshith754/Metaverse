@@ -28,9 +28,6 @@ function LoginPage() {
         timestamp: Date.now(),
       })
     );
-
-    console.log(`Welcome, ${trimmedName}!`);
-
     router.navigate({ to: "/" });
 
     setIsLoading(false);

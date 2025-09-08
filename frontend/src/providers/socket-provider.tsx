@@ -39,17 +39,14 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Connect to the server. Replace with your actual server URL.
     // The VITE_SERVER_URL comes from a .env file.
-    console.log("Attempting to connect to server at:", import.meta.env.VITE_SERVER_URL);
     const socketInstance = io(import.meta.env.VITE_SERVER_URL || "http://localhost:5000");
 
     socketInstance.on("connect", () => {
       setIsConnected(true);
-      console.log("Socket connected!");
     });
 
     socketInstance.on("disconnect", () => {
       setIsConnected(false);
-      console.log("Socket disconnected.");
     });
 
     setSocket(socketInstance);

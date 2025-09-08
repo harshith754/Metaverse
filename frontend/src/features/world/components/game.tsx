@@ -67,7 +67,12 @@ class GameScene extends Phaser.Scene {
   private setNearbyPlayersState: React.Dispatch<React.SetStateAction<any[]>>;
   public map!: Phaser.GameObjects.Image;
   public cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-  private wasd!: { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key };
+  private wasd!: {
+    W: Phaser.Input.Keyboard.Key;
+    A: Phaser.Input.Keyboard.Key;
+    S: Phaser.Input.Keyboard.Key;
+    D: Phaser.Input.Keyboard.Key;
+  };
   private onUpdatePlayersCallback: (
     players: Record<string, { x: number; y: number; name: string; animation?: string }>
   ) => void;
@@ -178,7 +183,12 @@ class GameScene extends Phaser.Scene {
 
   setupControls() {
     this.cursors = this.input!.keyboard!.createCursorKeys();
-    this.wasd = this.input!.keyboard!.addKeys("W,A,S,D") as { W: Phaser.Input.Keyboard.Key; A: Phaser.Input.Keyboard.Key; S: Phaser.Input.Keyboard.Key; D: Phaser.Input.Keyboard.Key };
+    this.wasd = this.input!.keyboard!.addKeys("W,A,S,D") as {
+      W: Phaser.Input.Keyboard.Key;
+      A: Phaser.Input.Keyboard.Key;
+      S: Phaser.Input.Keyboard.Key;
+      D: Phaser.Input.Keyboard.Key;
+    };
     this.input!.keyboard!.on("keydown-Z", this.toggleBoundaryVisibility, this);
   }
 
@@ -224,15 +234,11 @@ class GameScene extends Phaser.Scene {
       if (existingPlayer) {
         existingPlayer.setPosition(x, y);
         existingPlayer.anims.play(animation, true);
-        console.log(`Updating existing player: 
-      ${name} at (${x}, ${y})`); // Log update
       } else {
         const newPlayer = new Player(this, x, y, name || "Player", this.socket);
         newPlayer.scale = GAME_CONFIG.PLAYER.SCALE;
         newPlayer.anims.play(animation, true);
         this.players.set(id, newPlayer);
-        console.log(`Creating new player: ${name} 
-      at (${x}, ${y}) with animation: ${animation}`); //
       }
     }
   }
