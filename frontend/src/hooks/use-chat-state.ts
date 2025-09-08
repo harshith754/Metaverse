@@ -33,7 +33,7 @@ export const useChatState = ({ name, socket }: UseChatStateProps) => {
           message: inputValue,
         });
 
-        setInputValue(""); // Clear the input field;
+        setInputValue("");
       }
     },
     [inputValue, activeChat, name, setMessages, setInputValue, socket]

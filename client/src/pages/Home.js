@@ -22,6 +22,7 @@ class GameScene extends Phaser.Scene {
     this.playerName = playerName;
     this.nearbyPlayers = new Set();
     this.setNearbyPlayersState = setNearbyPlayers;
+    this.wasd = null;
   }
 
   preload() {
@@ -98,6 +99,7 @@ class GameScene extends Phaser.Scene {
 
   setupControls() {
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.wasd = this.input.keyboard.addKeys("W,A,S,D");
     this.input.keyboard.on(
       "keydown-Z",
       this.toggleBoundaryVisibility.bind(this)
@@ -111,7 +113,7 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
-    this.currentPlayer.update(this.cursors);
+    this.currentPlayer.update(this.cursors, this.wasd);
   }
 
   updatePlayers(playersData) {

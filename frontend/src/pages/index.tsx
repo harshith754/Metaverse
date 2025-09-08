@@ -40,37 +40,35 @@ function HomePage() {
   useSocketEvents({ socket, setMessages, onUpdatePlayers: handleUpdatePlayers });
 
   return (
-    <div>
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden">
-        <Header name={name} />
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden mx-auto">
+      <Header name={name} />
 
-        {/* Main Game Area */}
-        <div className="relative z-10 px-6 pb-6">
-          <div className="flex gap-6 h-[calc(100vh-200px)]">
-            <div className="flex flex-col gap-6">
-              <PlayerLists
-                onlinePlayers={onlinePlayers}
-                nearbyPlayers={nearbyPlayers}
-                activeChat={activeChat}
-                onPlayerClick={setActiveChat}
-              />
-              <ChatInterface
-                activeChat={activeChat}
-                messages={messages}
-                inputValue={inputValue}
-                onInputChange={setInputValue}
-                onSendMessage={handleSendMessage}
-                currentUser={name}
-              />
-            </div>
-
-              <Game
-                playerName={name}
-                socket={socket}
-                setNearbyPlayers={setNearbyPlayers}
-                onUpdatePlayers={handleUpdatePlayers}
-              />
+      {/* Main Game Area */}
+      <div className="relative z-10 px-6 pb-6 mx-auto max-w-7xl">
+        <div className="flex gap-6 h-[calc(100vh-200px)]">
+          <div className="flex flex-col gap-6">
+            <PlayerLists
+              onlinePlayers={onlinePlayers}
+              nearbyPlayers={nearbyPlayers}
+              activeChat={activeChat}
+              onPlayerClick={setActiveChat}
+            />
+            <ChatInterface
+              activeChat={activeChat}
+              messages={messages}
+              inputValue={inputValue}
+              onInputChange={setInputValue}
+              onSendMessage={handleSendMessage}
+              currentUser={name}
+            />
           </div>
+
+          <Game
+            playerName={name}
+            socket={socket}
+            setNearbyPlayers={setNearbyPlayers}
+            onUpdatePlayers={handleUpdatePlayers}
+          />
         </div>
       </div>
     </div>

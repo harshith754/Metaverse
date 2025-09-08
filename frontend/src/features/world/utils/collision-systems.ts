@@ -7,7 +7,6 @@ for (let i = 0; i < collisionTiles.length; i += 70) {
 }
 
 export class Boundary extends Phaser.GameObjects.Rectangle {
-  // Assert that 'body' will be an Arcade.Body after physics is enabled  body!: Phaser.Physics.Arcade.Body;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, 36, 36);
