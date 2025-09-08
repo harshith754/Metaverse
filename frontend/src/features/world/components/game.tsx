@@ -50,7 +50,11 @@ export function Game({ playerName, socket, setNearbyPlayers, onUpdatePlayers }: 
     };
   }, [playerName, socket, setNearbyPlayers]);
 
-  return <div id="phaser-container" className="w-full h-full" />;
+  return (
+    <div className="flex-1 bg-black/20 backdrop-blur-xl rounded-2xl border border-white/20 overflow-hidden">
+      <div id="phaser-container" className="h-auto max-w-[800px] m-auto" />
+    </div>
+  );
 }
 
 class GameScene extends Phaser.Scene {

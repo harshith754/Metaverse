@@ -1,7 +1,7 @@
 export const GAME_CONFIG = {
   CAMERA: {
     LERP: 0.2,
-    ZOOM: 0.5,
+    ZOOM: 0.7,
   },
   DIMENSIONS: {
     WIDTH: 800,

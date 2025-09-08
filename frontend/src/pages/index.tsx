@@ -64,14 +64,12 @@ function HomePage() {
               />
             </div>
 
-            <div className="flex-1 bg-black/20 backdrop-blur-xl rounded-2xl border border-white/20 overflow-hidden relative group">
               <Game
                 playerName={name}
                 socket={socket}
                 setNearbyPlayers={setNearbyPlayers}
                 onUpdatePlayers={handleUpdatePlayers}
               />
-            </div>
           </div>
         </div>
       </div>
