@@ -8,6 +8,8 @@ COPY frontend/package.json ./
 RUN npm install
 # Copy the rest of the frontend code
 COPY frontend/ .
+ARG VITE_SERVER_URL
+ENV VITE_SERVER_URL=$VITE_SERVER_URL
 RUN npm run build
 
 # Stage 2: Serve the built application with Nginx
